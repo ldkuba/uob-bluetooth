@@ -1,0 +1,14 @@
+/*
+ * fuzzer.h
+ *
+ *  Created on: Feb 21, 2019
+ *      Author: nawro
+ */
+
+#ifndef REPOS_APACHE_MYNEWT_NIMBLE_UOB_BLUETOOTH_INCLUDE_FUZZER_H_
+#define REPOS_APACHE_MYNEWT_NIMBLE_UOB_BLUETOOTH_INCLUDE_FUZZER_H_
+
+#include <stdint.h>
+
+
+#endif /* REPOS_APACHE_MYNEWT_NIMBLE_UOB_BLUETOOTH_INCLUDE_FUZZER_H_ */

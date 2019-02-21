@@ -1,0 +1,7 @@
+pkg.name: uob-bluetooth
+pkg.description: Bluetooth link layer fuzzer
+pkg.author: "Jakub Nawrocki <nawrocki97@gmail.com>"
+pkg.homepage: 
+pkg.keywords:
+
+pkg.deps:
