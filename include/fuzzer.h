@@ -20,6 +20,14 @@ enum BlePacketType {
 	ADV_IND = 0x0,
 };
 
+// Callback typedefs
+typedef uint8_t (*fuzzer_task_tx_cb_t)(uint8_t *txdata, uint8_t);
+typedef uint8_t (*fuzzer_task_rx_cb_t)(void);
+
+// Types of fuzzer tasks
+#define FUZZER_TASK_TYPE_TX 	0
+#define FUZZER_TASK_TYPE_RX		1
+
 void initFuzzer();
 void modifyName(uint8_t *txdata, uint8_t *payload_len);
 void modifyTxBuffer(uint8_t *txdata, uint8_t *payload_len);
