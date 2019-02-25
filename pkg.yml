@@ -4,4 +4,8 @@ pkg.author: "Jakub Nawrocki <nawrocki97@gmail.com>"
 pkg.homepage: 
 pkg.keywords:
 
+pkg.req_apis:
+    - log
+    
 pkg.deps:
+    - "@apache-mynewt-core/sys/log/full"
