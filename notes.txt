@@ -1,4 +1,4 @@
-Sending custom messages does not require additional calls the Controller because messages are sent quite often so any one of them can be used for substituting my data.
+25/02/2019: Sending custom messages does not require additional calls the Controller because messages are sent quite often so any one of them can be used for substituting my data.
 
 My own 'protocol' will be a stack of instructions. These can be either:
 
@@ -11,3 +11,8 @@ At each steps the fuzzer will have global settings for interacting with the Cont
 The "state machine" whether its an advertising or connection one, are available to the fuzzer through a function parameter so the settings can be altered. Easily.
 
 Finally, if the Radio ever has to be adjusted it is also available to the fuzzer code but for now there is no aparent radio features that need to be altered.
+
+26/02/2019: Fuzzer global settings:
+- A description of which messages should be blocked and which should be transmitted. Messages will be catregorised and specific categories can be disabled. The messages are categorized as follows:
+
+* Advertising: all types of advertising messages

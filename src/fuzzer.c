@@ -8,35 +8,6 @@
 #include "fuzzer.h"
 #include "console/console.h"
 
-typedef struct fuzzer_settings {
-
-} fuzzer_settings;
-
-// Struct to hold info about a fuzzer "state" or "task"
-typedef struct fuzzer_task {
-
-	// Start and end callbacks
-	void* start_cb;
-	void* end_cb;
-
-	// Fuzzer global settings
-	fuzzer_settings* state_settings;
-
-	/* TODO: Descriptor of task. Tasks are described by a function pointer
-	 * which defines its behaviour.
-	 *
-	 * If the task is a tx task the function will be called by the "modifyTxBuffer()"
-	 * function in order to modify the outgoing message.
-	 *
-	 * If the task is a rx task it represents which and or how many received packets
-	 * the task is waiting for.
-	 */
-	uint8_t task_type;
-	fuzzer_task_tx_cb_t tx_task_descriptor;
-	fuzzer_task_tx_cb_t rx_task_descriptor;
-
-} fuzzer_task;
-
 void initFuzzer(struct log *logger)
 {
 	fuzzer_log = logger;
@@ -84,6 +55,10 @@ void modifyName(uint8_t *txdata, uint8_t *payload_len)
 
 void modifyTxBuffer(uint8_t *txdata, uint8_t *payload_len)
 {
+	//uint8_t currentChannel;
+
+	//ble_phy_getchan(&currentChannel);
+
 	uint8_t firstByte = txdata[0];
 	uint8_t packetType = firstByte & 15;
 
@@ -96,5 +71,10 @@ void modifyTxBuffer(uint8_t *txdata, uint8_t *payload_len)
 		default:
 			break;
 	}
+
+}
+
+void notifyFuzzerRx(uint8_t *rxbuf, struct ble_mbuf_hdr *rxhdr)
+{
 
 }
