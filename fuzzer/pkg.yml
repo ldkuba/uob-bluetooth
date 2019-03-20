@@ -1,0 +1,13 @@
+pkg.name: uob-bluetooth
+pkg.description: Bluetooth link layer fuzzer
+pkg.author: "Jakub Nawrocki <nawrocki97@gmail.com>"
+pkg.homepage: 
+pkg.keywords:
+
+pkg.req_apis:
+    - log
+    
+pkg.deps:
+    - "@apache-mynewt-core/sys/log/full"
+    - "@apache-mynewt-nimble/nimble/controller"
+    - "@apache-mynewt-nimble/nimble"
