@@ -5,8 +5,8 @@
  *      Author: nawro
  */
 
-#ifndef REPOS_APACHE_MYNEWT_NIMBLE_UOB_BLUETOOTH_INCLUDE_FUZZER_TASK_H_
-#define REPOS_APACHE_MYNEWT_NIMBLE_UOB_BLUETOOTH_INCLUDE_FUZZER_TASK_H_
+#ifndef REPOS_UOB_BLUETOOTH_INCLUDE_FUZZER_TASK_H_
+#define REPOS_UOB_BLUETOOTH_INCLUDE_FUZZER_TASK_H_
 
 #include "fuzzer_settings.h"
 #include "nimble/ble.h"
@@ -38,7 +38,7 @@ typedef int (*fuzzer_task_rx_cb_t)(uint8_t *rxbuf, struct ble_mbuf_hdr *rxhdr);
 struct fuzzer_task_t;
 struct fuzzer_task_list_t;
 
-// Struct to hold info about a fuzzer "state" or "task"
+// Struct to hold info about a fuzzer task
 typedef struct fuzzer_task_t {
 
 	//Pointer to linked list
@@ -51,8 +51,8 @@ typedef struct fuzzer_task_t {
 	// Fuzzer global settings
 	fuzzer_settings_t *state_settings;
 
-	/* TODO: Descriptor of task. Tasks are described by a function pointer
-	 * which defines its behaviour.
+	/* Descriptor of task. Tasks are described by a function pointer
+	 * which defines their behaviour.
 	 *
 	 * If the task is a tx task the function will be called by the "modifyTxBuffer()"
 	 * function in order to modify the outgoing message.
@@ -72,4 +72,4 @@ typedef struct fuzzer_task_list_t {
 	struct fuzzer_task_list_t *next;
 } fuzzer_task_list_t;
 
-#endif /* REPOS_APACHE_MYNEWT_NIMBLE_UOB_BLUETOOTH_INCLUDE_FUZZER_TASK_H_ */
+#endif /* REPOS_UOB_BLUETOOTH_INCLUDE_FUZZER_TASK_H_ */

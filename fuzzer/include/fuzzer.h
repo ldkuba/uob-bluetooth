@@ -5,8 +5,8 @@
  *      Author: nawro
  */
 
-#ifndef REPOS_APACHE_MYNEWT_NIMBLE_UOB_BLUETOOTH_INCLUDE_FUZZER_H_
-#define REPOS_APACHE_MYNEWT_NIMBLE_UOB_BLUETOOTH_INCLUDE_FUZZER_H_
+#ifndef REPOS_UOB_BLUETOOTH_INCLUDE_FUZZER_H_
+#define REPOS_UOB_BLUETOOTH_INCLUDE_FUZZER_H_
 
 #include <stdint.h>
 #include "log/log.h"
@@ -17,7 +17,7 @@
 #include "controller/ble_phy.h"
 #include "controller/ble_ll.h"
 
-// Logging
+// Logging - currently not supported. Is known to break the fuzzer
 struct log *fuzzer_log;
 #define FUZZER_LOG(lvl, ...) \
     LOG_ ## lvl(fuzzer_log, LOG_MODULE_PERUSER + 0, __VA_ARGS__)
@@ -87,14 +87,29 @@ enum BleLLCtrlPacketType {
 };
 
 // Fuzzer data
+// Holds the information about the status of the fuzzer
 int fuzzerStatus;
+
+// Holds global setting of the fuzzer currently in use
 fuzzer_settings_t settings;
+
+// Pointer to the list of tasks being executed by the fuzzer
 fuzzer_task_list_t *tasks;
+
+// Pointer to the current task being executed
 fuzzer_task_list_t *currentTask;
 
+// Initializes the fuzzer and sets up the first task
 void initFuzzer(struct log *logger, fuzzer_task_list_t *taskList);
+
+// Performs clean up on all fuzzer related code. Frees all components of the fuzzer tasks created by the user
 void cleanupFuzzer();
+
+// Auxiliary function modifying the name of a device in a ADV_IND packet
 void modifyName(uint8_t *txdata, uint8_t *payload_len, const char* param_name, uint8_t length);
+
+// Checks if the packet which is being sent originates from a connection context
+int isInConnState(void);
 
 // Sets message length to 0 and everything else to 0 if the message
 // type should be filtered, otherwise does nothing
@@ -106,4 +121,4 @@ void modifyTxBuffer(uint8_t *txdata, uint8_t *payload_len);
 // Rx intercept
 void notifyFuzzerRx(uint8_t *rxbuf, struct ble_mbuf_hdr *rxhdr);
 
-#endif /* REPOS_APACHE_MYNEWT_NIMBLE_UOB_BLUETOOTH_INCLUDE_FUZZER_H_ */
+#endif /* REPOS_UOB_BLUETOOTH_INCLUDE_FUZZER_H_ */

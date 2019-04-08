@@ -22,7 +22,11 @@ void initFuzzer(struct log *logger, fuzzer_task_list_t *taskList)
 	tasks = taskList;
 	currentTask = taskList;
 	settings = *(currentTask->task.state_settings);
-	currentTask->task.start_cb();
+
+	if(currentTask->task.start_cb != NULL)
+	{
+		currentTask->task.start_cb();
+	}
 
 	fuzzerStatus = FUZZER_RUNNING;
 }
@@ -61,8 +65,8 @@ void modifyName(uint8_t *txdata, uint8_t *payload_len, const char* param_name, u
 	// Set name segment length
 	txdata[nameStart-2] = nameLength + 1;
 
-	// Make space in the buffer if the name is longest than original
-	if(bufferOffset > 0)
+	// Make space in the buffer if the name is longer than original
+	if(bufferOffset < 0)
 	{
 		for(int i = *payload_len + 2 + (-bufferOffset); i >= nameStart + nameLength; i--)
 		{
@@ -77,7 +81,8 @@ void modifyName(uint8_t *txdata, uint8_t *payload_len, const char* param_name, u
 	}
 
 	// If name was shorter than original pull up buffer
-	for(int i = nameStart + nameLength; i < *payload_len + 2 - bufferOffset; i++)
+
+	for(int i = nameStart + nameLength; i < *payload_len + 2 - (-bufferOffset); i++)
 	{
 		txdata[i] = txdata[i + bufferOffset];
 	}
@@ -98,6 +103,26 @@ void clearBuffer(uint8_t *txdata, uint8_t *payload_len)
 	txdata[0] = 0;
 	txdata[1] = 0;
 	*payload_len = 0;
+}
+
+int isInConnState(void)
+{
+	int rc;
+	uint8_t txChannel = -1;
+
+	rc = ble_phy_getchan(&txChannel);
+	if(rc != 0 || txChannel < 0)
+	{
+		return -1;
+	}
+
+	if(txChannel == 37 || txChannel == 38 || txChannel == 39)
+	{
+		return 0;
+	}else
+	{
+		return 1;
+	}
 }
 
 void filterMessagesTx(uint8_t *txdata, uint8_t *payload_len)
@@ -164,7 +189,11 @@ void modifyTxBuffer(uint8_t *txdata, uint8_t *payload_len)
 	switch(result)
 	{
 	case FUZZER_TASK_COMPLETE:
-		currentTask->task.end_cb();
+
+		if(currentTask->task.end_cb != NULL)
+		{
+			currentTask->task.end_cb();
+		}
 
 		// Switch to next task or end if it was the last
 		if(currentTask->next != NULL)
@@ -176,7 +205,10 @@ void modifyTxBuffer(uint8_t *txdata, uint8_t *payload_len)
 			settings = *(currentTask->task.state_settings);
 
 			// Run the starting callback
-			currentTask->task.start_cb();
+			if(currentTask->task.start_cb)
+			{
+				currentTask->task.start_cb();
+			}
 		}else
 		{
 			// Exit the fuzzer with a success code, all tasks completed
@@ -215,7 +247,11 @@ void notifyFuzzerRx(uint8_t *rxbuf, struct ble_mbuf_hdr *rxhdr)
 	switch(result)
 	{
 	case FUZZER_TASK_COMPLETE:
-		currentTask->task.end_cb();
+
+		if(currentTask->task.end_cb != NULL)
+		{
+			currentTask->task.end_cb();
+		}
 
 		if(currentTask->next != NULL)
 		{
@@ -223,7 +259,10 @@ void notifyFuzzerRx(uint8_t *rxbuf, struct ble_mbuf_hdr *rxhdr)
 
 			settings = *(currentTask->task.state_settings);
 
-			currentTask->task.start_cb();
+			if(currentTask->task.start_cb)
+			{
+				currentTask->task.start_cb();
+			}
 		}else
 		{
 			cleanupFuzzer();
